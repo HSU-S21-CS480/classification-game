@@ -8,5 +8,6 @@
       "strict": true,
       "allowJs": true,
       "noImplicitAny": false,
+      "moduleResolution": "node",
     }
   }

@@ -6,15 +6,7 @@ import session from 'express-session';
 import FileStore from 'session-file-store';
 import bodyParser from 'body-parser';
 
-/*
-const express = require('express');
-const app = express();                 // define our app using express
-const fileUpload = require('express-fileupload');
-const session = require('express-session');
-const FileStore = require('session-file-store')(session);
-const bodyParser = require('body-parser');
-*/
-
+const FileStoreObj = FileStore(session);
 const app = express();
 
 // configure app to use bodyParser()
@@ -26,7 +18,7 @@ app.use(fileUpload());
 // configure session management using a file-based schema
 const cookie = { secure: false, httpOnly: false };
 app.use(session({
-   store: new FileStore({ path: './session', ttl: 86400 }),
+   store: new FileStoreObj({ path: './session', ttl: 86400 }),
    secret: "super secret hash",
    resave: false,
    saveUninitialized: false,

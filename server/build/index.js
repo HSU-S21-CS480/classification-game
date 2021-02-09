@@ -3,19 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+//https://developer.okta.com/blog/2018/11/15/node-express-typescript
+//https://blog.logrocket.com/typescript-with-node-js-and-express/
 const express_1 = __importDefault(require("express"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const express_session_1 = __importDefault(require("express-session"));
 const session_file_store_1 = __importDefault(require("session-file-store"));
 const body_parser_1 = __importDefault(require("body-parser"));
-/*
-const express = require('express');
-const app = express();                 // define our app using express
-const fileUpload = require('express-fileupload');
-const session = require('express-session');
-const FileStore = require('session-file-store')(session);
-const bodyParser = require('body-parser');
-*/
+const FileStoreObj = session_file_store_1.default(express_session_1.default);
 const app = express_1.default();
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -25,7 +20,7 @@ app.use(express_fileupload_1.default());
 // configure session management using a file-based schema
 const cookie = { secure: false, httpOnly: false };
 app.use(express_session_1.default({
-    store: new session_file_store_1.default({ path: './session', ttl: 86400 }),
+    store: new FileStoreObj({ path: './session', ttl: 86400 }),
     secret: "super secret hash",
     resave: false,
     saveUninitialized: false,
