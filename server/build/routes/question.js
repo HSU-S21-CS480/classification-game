@@ -39,3 +39,4 @@ const getQuestion = (req, res) => {
     res.json({ question });
 };
 exports.default = question;
+//# sourceMappingURL=question.js.map

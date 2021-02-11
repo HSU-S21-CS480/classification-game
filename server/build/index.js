@@ -27,17 +27,6 @@ app.use(express_session_1.default({
     saveUninitialized: false,
     cookie
 }));
-// ROUTES FOR OUR API
-// =============================================================================
-const router = express_1.default.Router();
-// test route to make sure everything is working
-router.get('/', (req, res) => {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
-question_1.default(router);
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-app.use('/api', router);
 // configure listening port
 const port = process.env.PORT || 8080;
 // configure release / debug settings
@@ -48,6 +37,7 @@ if (runtime_mode === "debug") {
 // configure CORS from react (not safe for production)
 app.use((req, res, next) => {
     if (runtime_mode === "debug") {
+        console.log("Enabling CORS");
         const origin = req.get('origin');
         res.header('Access-Control-Allow-Origin', origin);
     }
@@ -62,7 +52,19 @@ app.use((req, res, next) => {
         next();
     }
 });
+// ROUTES FOR OUR API
+// =============================================================================
+const router = express_1.default.Router();
+// test route to make sure everything is working
+router.get('/', (req, res) => {
+    res.json({ message: 'hooray! welcome to our api!' });
+});
+question_1.default(router);
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
+app.use('/api', router);
 // START THE SERVER
 // =============================================================================
 app.listen(port);
 console.log('Server running on port ' + port);
+//# sourceMappingURL=index.js.map

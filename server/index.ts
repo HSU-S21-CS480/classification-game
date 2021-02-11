@@ -26,22 +26,6 @@ app.use(session({
    cookie
 }));
 
-// ROUTES FOR OUR API
-// =============================================================================
-const router = express.Router();
-
-// test route to make sure everything is working
-router.get('/', (req, res) => {
-   res.json({ message: 'hooray! welcome to our api!' });
-});
-
-question(router);
-
-
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-app.use('/api', router);
-
 // configure listening port
 const port = process.env.PORT || 8080;
 
@@ -55,6 +39,7 @@ if (runtime_mode === "debug") {
 app.use((req, res, next) => {
 
    if (runtime_mode === "debug") {
+      console.log("Enabling CORS");
       const origin = req.get('origin');
       res.header('Access-Control-Allow-Origin', origin);
    }
@@ -70,6 +55,22 @@ app.use((req, res, next) => {
       next();
    }
 });
+
+// ROUTES FOR OUR API
+// =============================================================================
+const router = express.Router();
+
+// test route to make sure everything is working
+router.get('/', (req, res) => {
+   res.json({ message: 'hooray! welcome to our api!' });
+});
+
+question(router);
+
+
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
+app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
