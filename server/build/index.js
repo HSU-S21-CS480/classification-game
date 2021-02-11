@@ -10,6 +10,7 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const express_session_1 = __importDefault(require("express-session"));
 const session_file_store_1 = __importDefault(require("session-file-store"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const question_1 = __importDefault(require("./routes/question"));
 const FileStoreObj = session_file_store_1.default(express_session_1.default);
 const app = express_1.default();
 // configure app to use bodyParser()
@@ -33,7 +34,7 @@ const router = express_1.default.Router();
 router.get('/', (req, res) => {
     res.json({ message: 'hooray! welcome to our api!' });
 });
-// ROUTES GO HERE
+question_1.default(router);
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);

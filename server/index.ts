@@ -5,6 +5,7 @@ import fileUpload from 'express-fileupload';
 import session from 'express-session';
 import FileStore from 'session-file-store';
 import bodyParser from 'body-parser';
+import question from './routes/question';
 
 const FileStoreObj = FileStore(session);
 const app = express();
@@ -34,7 +35,7 @@ router.get('/', (req, res) => {
    res.json({ message: 'hooray! welcome to our api!' });
 });
 
-// ROUTES GO HERE
+question(router);
 
 
 // REGISTER OUR ROUTES -------------------------------
