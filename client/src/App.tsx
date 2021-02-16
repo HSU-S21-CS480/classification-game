@@ -1,64 +1,52 @@
 import React, { useEffect } from 'react';
-//import {MouseEvent} from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import axios from 'axios';
+import { Container, Row, Col } from 'react-bootstrap';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import QuestionAsker from './views/QuestionAsker/index';
+import AboutView from './views/About/index';
+import DetailsView from './views/Details/index';
 import './App.css';
-
-interface QuestionModel {
-  questionHeader: string,
-  questionDescription: string,
-  userResponse?: boolean,
-  userChoices: {}
-}
-
-async function getQuestion(): Promise<QuestionModel> {
-  const result = await axios.get('http://localhost:8080/api/question');
-  const question: QuestionModel = result?.data?.question as QuestionModel;
-  return question;
-}
 
 function App() {
 
-  const buttonClick = (evt: React.MouseEvent<HTMLElement>, result) => {
-    setModel({ ...model, userResponse: result });
-  };
-  const [model, setModel] = React.useState({ questionHeader: "", questionDescription: "", userChoices: {} } as QuestionModel);
-
-  //https://dev.to/silvestricodes/asynchronous-flows-with-react-hooks-1g0m
-  useEffect(() => {
-    async function getData() {
-      const question: QuestionModel = await getQuestion();
-      setModel(question);
-    }
-    getData()
-  }, []);
   return (
-    <div className="App">
-      <Container>
-        <Row className="mt-2">
-          <Col>
-            <h2>{model.questionHeader}</h2>
-          </Col>
-        </Row>
-        <Row className="mt-2">
-          <Col>
-            {model.questionDescription}
-          </Col>
-        </Row>
-        <Row className="mt-2">
-          <Col>
-            {Object.keys(model.userChoices).map((keyName, i) => (
-              <Button className="mx-1" key={keyName} onClick={(evt) => buttonClick(evt, keyName)}>{model.userChoices[keyName]}</Button>
-            ))}
-          </Col>
-        </Row>
-        <Row className="mt-2">
-          <Col>
-            <Button className="btn-success" onClick={async () => setModel(await getQuestion())}>Submit</Button>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <Router>
+      <div className="App">
+        <Container>
+          <Row>
+            <Col>
+              <nav>
+                <ul>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/about">About</Link>
+                  </li>
+                </ul>
+              </nav>
+            </Col>
+          </Row>
+        </Container>
+
+
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/about">
+            <AboutView />
+          </Route>
+          <Route path="/details/:id" children={<DetailsView />} />
+          <Route path="/">
+            <QuestionAsker />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
