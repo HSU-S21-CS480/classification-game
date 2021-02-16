@@ -1,5 +1,18 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Database_1 = __importDefault(require("../models/Database"));
 const questionHeaders = [
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
     "Cras eget leo ut leo maximus venenatis interdum non urna?",
@@ -26,8 +39,11 @@ const userChoices = [
 const question = (router) => {
     router.get('/question', getQuestion);
 };
+const db = new Database_1.default('../data/QuestionDb.db');
 //returns a random question
-const getQuestion = (req, res) => {
+const getQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const data = yield ((_a = db.Questions) === null || _a === void 0 ? void 0 : _a.get(1));
     const header = questionHeaders[Math.floor(Math.random() * questionHeaders.length)];
     const description = questionDescriptions[Math.floor(Math.random() * questionDescriptions.length)];
     const choices = userChoices[Math.floor(Math.random() * userChoices.length)];
@@ -37,6 +53,6 @@ const getQuestion = (req, res) => {
         userChoices: choices
     };
     res.json({ question });
-};
+});
 exports.default = question;
 //# sourceMappingURL=question.js.map

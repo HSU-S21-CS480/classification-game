@@ -37,7 +37,6 @@ if (runtime_mode === "debug") {
 // configure CORS from react (not safe for production)
 app.use((req, res, next) => {
     if (runtime_mode === "debug") {
-        console.log("Enabling CORS");
         const origin = req.get('origin');
         res.header('Access-Control-Allow-Origin', origin);
     }

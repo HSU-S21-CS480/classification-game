@@ -1,4 +1,5 @@
 import Express, { Router } from 'express';
+import Database from '../models/Database';
 
 const questionHeaders = [
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
@@ -37,8 +38,12 @@ const question = (router: Router) => {
     router.get('/question', getQuestion);
 };
 
+const db = new Database('../data/QuestionDb.db');
+
 //returns a random question
-const getQuestion = (req, res) => {
+const getQuestion = async (req, res) => {
+
+    const data = await db.Questions?.get(1);
     const header: string = questionHeaders[Math.floor(Math.random() * questionHeaders.length)];
     const description: string = questionDescriptions[Math.floor(Math.random() * questionDescriptions.length)];
     const choices = userChoices[Math.floor(Math.random() * userChoices.length)];
