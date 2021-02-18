@@ -9,9 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.QuestionDb = void 0;
 class QuestionDb {
     constructor(db) {
         this._db = db;
+    }
+    getKeys() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const sql = "SELECT id FROM Questions";
+            const result = yield this._db.all(sql);
+            return result;
+        });
     }
     get(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,9 +31,28 @@ class QuestionDb {
                     INNER JOIN QuestionChoices qc on q.choice_group = qc.group_id
                     WHERE q.id = :id`;
             const params = { ':id': id };
-            const result = yield this._db.all(sql, params);
+            const result = yield this._db.get(sql, params);
+            let model = {
+                id: result['id'],
+                questionHeader: result['header'],
+                questionDescription: result['description'],
+                userChoices: {}
+            };
+            const choices_array = result["choices"].split(":");
+            const choices_order = result["sort_order"].split(":");
+            const choices_obj = {};
+            for (let i = 0; i < choices_order.length; i++) {
+                choices_obj[choices_order[i]] = choices_array[i];
+            }
+            const choices = Object.keys(choices_obj).sort().reduce((obj, key) => {
+                obj[key] = choices_obj[key];
+                return obj;
+            }, {});
+            model.userChoices = choices;
+            return model;
         });
     }
 }
+exports.QuestionDb = QuestionDb;
 exports.default = QuestionDb;
 //# sourceMappingURL=QuestionDb.js.map
