@@ -24,7 +24,7 @@ function QuestionAsker() {
   };
 
   const submitClick = async () => {
-    const result = await axios.post(`http://localhost:8080/api/question/${model.id}`, model);
+    const result = await axios.post(`http://localhost:8080/api/question/${model.id}/response`, model);
     setModel(await getQuestion());
   };
 
